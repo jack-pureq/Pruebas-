@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GT PUREQ - App Pasajero</title>
+    <style>
+        /* Estilos base enfocados en Mobile-First */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f5f7fa; 
+            margin: 0; 
+            padding: 0; 
+            color: #333;
+        }
+        .header { 
+            background: #d32f2f; /* Rojo llamativo para la app */
+            color: white; 
+            padding: 18px; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        .container { 
+            padding: 20px; 
+        }
+        .card { 
+            background: white; 
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05); 
+            margin-bottom: 20px; 
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 16px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #d32f2f;
+        }
+        .btn-primary { 
+            width: 100%; 
+            background: #333; 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: bold;
+            cursor: pointer; 
+            transition: background 0.3s;
+        }
+        .btn-primary:active {
+            background: #000;
+        }
+        .btn-success {
+            background: #2e7d32;
+        }
+        .btn-success:active {
+            background: #1b5e20;
+        }
+        
+        /* Oculto por defecto hasta que se calcule la tarifa */
+        #resultado-viaje { 
+            display: none; 
+            background: #e8f5e9; 
+            border-left: 6px solid #2e7d32;
+        }
+        .precio-final {
+            font-size: 32px;
+            color: #2e7d32;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>GT PUREQ</h1>
+        <div style="font-size: 12px; opacity: 0.8;">Modo Pasajero</div>
+    </div>
+
+    <div class="container">
+        <!-- Formulario de Solicitud -->
+        <div class="card">
+            <h3 style="margin-top: 0; color: #d32f2f;">¿A dónde vamos?</h3>
+            
+            <div class="form-group">
+                <label>Punto de Recojo:</label>
+                <input type="text" id="origen" placeholder="Ej: Hospital Honorio Delgado">
+            </div>
+            
+            <div class="form-group">
+                <label>Destino:</label>
+                <input type="text" id="destino" placeholder="Ej: Feria El Altiplano">
+            </div>
+            
+            <!-- Simulación de la API de Mapas -->
+            <div class="form-group" style="background: #f9f9f9; padding: 10px; border-radius: 8px;">
+                <label style="color: #0056b3;">[Simulador] Distancia (km):</label>
+                <input type="number" id="distancia" step="0.1" placeholder="Ej: 4.5">
+                
+                <label style="color: #0056b3; margin-top:10px;">[Simulador] Tiempo (min):</label>
+                <input type="number" id="tiempo" placeholder="Ej: 12">
+            </div>
+
+            <button class="btn-primary" onclick="simularCotizacion()">Ver Tarifa</button>
+        </div>
+
+        <!-- Tarjeta de Resultados -->
+        <div class="card" id="resultado-viaje">
+            <h3 style="margin-top: 0;">Resumen del Viaje</h3>
+            <p style="margin: 5px 0;"><strong>Recorrido:</strong> <span id="res-distancia"></span> km</p>
+            <p style="margin: 5px 0;"><strong>Tiempo est.:</strong> <span id="res-tiempo"></span> min</p>
+            <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
+            <div style="text-align: center; font-size: 14px; color: #555;">Tarifa Calculada</div>
+            <div class="precio-final">S/ <span id="res-total">0.00</span></div>
+            
+            <button class="btn-primary btn-success" onclick="confirmarViaje()" style="margin-top: 10px;">
+                Pedir GT PUREQ
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configuración central del algoritmo de tarifas
+        const TARIFARIO = {
+            tarifaBase: 2.50,        // Costo por iniciar el viaje
+            costoPorKilometro: 1.50, // Tarifa ajustada por el conductor
+            costoPorMinuto: 0.15,    // Compensación de tiempo/tráfico
+            tarifaMinima: 5.50       // Piso mínimo para que el viaje sea rentable
+        };
+
+        function simularCotizacion() {
+            // Capturar datos de los inputs
+            const origen = document.getElementById('origen').value;
+            const destino = document.getElementById('destino').value;
+            const distancia = parseFloat(document.getElementById('distancia').value);
+            const tiempo = parseFloat(document.getElementById('tiempo').value);
+
+            // Validaciones básicas
+            if (!origen || !destino) {
+                alert("Por favor ingresa un punto de origen y destino.");
+                return;
+            }
+            if (isNaN(distancia) || isNaN(tiempo) || distancia <= 0 || tiempo <= 0) {
+                alert("Para la simulación, ingresa valores numéricos válidos en distancia y tiempo.");
+                return;
+            }
+
+            // 1. Ejecutar el cálculo
+            const costoDistancia = distancia * TARIFARIO.costoPorKilometro;
+            const costoTiempo = tiempo * TARIFARIO.costoPorMinuto;
+            let total = TARIFARIO.tarifaBase + costoDistancia + costoTiempo;
+
+            // 2. Aplicar validación de tarifa mínima
+            if (total < TARIFARIO.tarifaMinima) {
+                total = TARIFARIO.tarifaMinima;
+            }
+
+            // 3. Pintar los datos en la interfaz
+            document.getElementById('res-distancia').innerText = distancia.toFixed(1);
+            document.getElementById('res-tiempo').innerText = tiempo;
+            
+            // Redondear a la moneda más cercana (ej: 0.10) para evitar céntimos incómodos
+            const totalRedondeado = (Math.round(total * 10) / 10).toFixed(2);
+            document.getElementById('res-total').innerText = totalRedondeado;
+
+            // 4. Mostrar la tarjeta de resultados con una pequeña animación
+            const tarjetaResultado = document.getElementById('resultado-viaje');
+            tarjetaResultado.style.display = 'block';
+            
+            // Desplazar la vista hacia el resultado
+            tarjetaResultado.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function confirmarViaje() {
+            // Aquí iría el código WebSocket/Fetch para enviar la alerta a la App Conductor
+            const boton = document.querySelector('.btn-success');
+            boton.innerText = "Buscando conductor...";
+            boton.style.opacity = "0.7";
+            
+            setTimeout(() => {
+                alert("¡Simulación exitosa! Los datos de este viaje se enviarían al backend para notificar al conductor.");
+                boton.innerText = "Pedir GT PUREQ";
+                boton.style.opacity = "1";
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
