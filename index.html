@@ -17,8 +17,6 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        
-        /* Estructura principal fija para evitar saltos */
         body { background-color: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
         header { padding: 12px; text-align: center; background: var(--surface); border-bottom: 1px solid #333; flex-shrink: 0; }
@@ -27,23 +25,15 @@
         .content { flex: 1; overflow-y: auto; padding: 20px; display: none; flex-direction: column; align-items: center; }
         .content.active { display: flex; }
 
-        /* Reproductor Música */
         .album-art { width: 180px; height: 180px; background: #333; border-radius: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--text-dim); box-shadow: 0 10px 30px rgba(0,0,0,0.5); flex-shrink: 0;}
         .song-info { text-align: center; margin-bottom: 15px; width: 100%; flex-shrink: 0;}
         .song-title { font-size: 1.2rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .song-artist { color: var(--text-dim); font-size: 0.9rem; }
 
-        /* VUMETER CAJONADO (Solución al salto de pantalla) */
+        /* VUMETER CAJONADO */
         .vumeter-container { 
-            display: flex; 
-            justify-content: center; 
-            align-items: flex-end; 
-            gap: 3px; 
-            height: 50px; /* Altura fija */
-            width: 100%; 
-            margin-bottom: 20px;
-            overflow: hidden; /* Oculta lo que sobresalga */
-            flex-shrink: 0;
+            display: flex; justify-content: center; align-items: flex-end; gap: 3px; 
+            height: 50px; width: 100%; margin-bottom: 20px; overflow: hidden; flex-shrink: 0;
         }
         .bar { width: 6px; height: 2px; background: var(--secondary); border-radius: 3px; transition: height 0.05s ease; }
 
@@ -62,33 +52,43 @@
         input[type="range"] { flex: 1; -webkit-appearance: none; background: #444; height: 4px; border-radius: 2px; outline: none; }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; background: var(--secondary); border-radius: 50%; cursor: pointer; }
 
-        .playlist-btn { background: var(--surface); border: 1px solid #333; color: var(--text); padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .playlist-btn { background: var(--surface); border: 1px solid #444; color: var(--text); padding: 15px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold;}
         .playlist-container { width: 100%; margin-top: 15px; max-height: 200px; overflow-y: auto; padding-right: 5px; }
         .playlist-item { padding: 10px; background: var(--surface); margin-bottom: 5px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 0.9rem; }
         .playlist-item:hover { background: #333; }
 
         /* Sección Radio */
         .radio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; margin-bottom: 20px; }
-        .radio-station { background: var(--surface); padding: 15px 10px; border-radius: 10px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+        .radio-station { background: var(--surface); padding: 20px 10px; border-radius: 10px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
         .radio-station.active { border-color: var(--primary); background: #2a1010; }
-        .radio-station.error { border-color: #F44336; opacity: 0.6; }
-        .radio-station i { font-size: 1.5rem; color: var(--primary); margin-bottom: 5px; display: block; }
-        .radio-name { font-size: 0.85rem; font-weight: bold; }
+        .radio-station.error { border-color: #F44336; opacity: 0.5; pointer-events: none; }
+        .radio-station i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; display: block; }
+        .radio-name { font-size: 0.9rem; font-weight: bold; }
 
-        /* Navegación Inferior (Más visible) */
-        nav { background: var(--surface); display: flex; justify-content: space-around; padding: 10px 0 15px 0; border-top: 1px solid #333; flex-shrink: 0; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-dim); cursor: pointer; font-size: 0.85rem; transition: color 0.2s; padding: 5px 20px; border-radius: 8px;}
-        .nav-item i { font-size: 1.6rem; margin-bottom: 5px; }
+        /* NAVEGACIÓN INFERIOR GRANDE Y CLARA */
+        nav { 
+            background: #000; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 10px 0 20px 0; 
+            border-top: 2px solid #333; 
+            flex-shrink: 0;
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; 
+            color: #666; cursor: pointer; font-size: 0.9rem; font-weight: bold;
+            padding: 10px 30px; border-radius: 12px; transition: all 0.2s;
+        }
+        .nav-item i { font-size: 1.8rem; margin-bottom: 5px; }
         .nav-item.active { color: var(--secondary); background: rgba(255, 193, 7, 0.1); }
 
-        /* Eq Overlay */
         .eq-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
         .eq-overlay.show { display: flex; }
         .eq-sliders { display: flex; gap: 15px; }
         .eq-slider-group { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 0.8rem; color: var(--text-dim);}
         .eq-slider-group input[type="range"] { writing-mode: vertical-lr; direction: rtl; height: 100px; width: 6px; }
         
-        #loading-db { color: var(--secondary); margin-top: 20px; font-style: italic; display: none; }
+        #loading-db { color: var(--secondary); margin-top: 10px; font-size: 0.9rem; display: none; text-align: center; }
     </style>
 </head>
 <body>
@@ -101,8 +101,8 @@
     <div id="sec-music" class="content active">
         <div class="album-art"><i class="fas fa-music"></i></div>
         <div class="song-info">
-            <div class="song-title" id="song-title">Cargando música guardada...</div>
-            <div class="song-artist" id="song-artist">Espere un momento</div>
+            <div class="song-title" id="song-title">Sin música seleccionada</div>
+            <div class="song-artist" id="song-artist">Agrega tus canciones abajo</div>
         </div>
 
         <div class="vumeter-container" id="vumeter"></div>
@@ -133,11 +133,13 @@
             </div>
             <button class="btn" id="btn-eq" style="font-size: 1rem; color: var(--text-dim);"><i class="fas fa-sliders-h"></i> Ecualizador</button>
             
-            <button class="playlist-btn" id="btn-load-files"><i class="fas fa-plus-circle"></i> Agregar nueva carpeta de música</button>
-            <input type="file" id="file-input" webkitdirectory directory multiple accept="audio/*" style="display: none;">
-            <div id="loading-db"><i class="fas fa-spinner fa-spin"></i> Guardando canciones permanentemente...</div>
+            <button class="playlist-btn" id="btn-load-files"><i class="fas fa-plus-circle"></i> Seleccionar Canciones</button>
+            <!-- Cambié a "multiple" en vez de "webkitdirectory" para evitar congelamiento en celular -->
+            <input type="file" id="file-input" multiple accept="audio/*" style="display: none;">
             
-            <div style="width: 100%; margin-top:15px; display: flex; justify-content: space-between;">
+            <div id="loading-db"><i class="fas fa-spinner fa-spin"></i> Guardando canción... por favor espera.</div>
+            
+            <div style="width: 100%; margin-top:15px; display: flex; justify-content: space-between; align-items: center;">
                 <span style="color:var(--secondary)"><i class="fas fa-list"></i> Biblioteca:</span>
                 <button class="btn" id="btn-show-favs" style="font-size: 0.9rem; color: var(--text-dim);">Ver Favoritos</button>
             </div>
@@ -145,10 +147,9 @@
         </div>
     </div>
 
-    <!-- SECCIÓN RADIO -->
+    <!-- SECCIÓN RADIO (ACÁ ESTÁ LA RADIO) -->
     <div id="sec-radio" class="content">
-        <h2 style="margin-bottom: 10px; color: var(--secondary);"><i class="fas fa-broadcast-tower"></i> Radios en línea</h2>
-        <p style="color:var(--text-dim); font-size:0.8rem; margin-bottom:20px; text-align:center;">*Nota: Algunas radios bloquean navegadores web por derechos de autor.</p>
+        <h2 style="margin-bottom: 20px; color: var(--secondary);"><i class="fas fa-broadcast-tower"></i> Radios de Perú</h2>
         
         <div class="radio-grid" id="radio-grid"></div>
 
@@ -181,7 +182,7 @@
         <button class="btn" id="btn-close-eq" style="font-size: 1.5rem; color: var(--primary); margin-top: 20px;"><i class="fas fa-times-circle"></i> Cerrar</button>
     </div>
 
-    <!-- Navegación Inferior -->
+    <!-- MENÚ INFERIOR CLARO -->
     <nav>
         <div class="nav-item active" data-sec="sec-music"><i class="fas fa-compact-disc"></i>Música</div>
         <div class="nav-item" data-sec="sec-radio"><i class="fas fa-radio"></i>Radio</div>
@@ -191,10 +192,9 @@
     <audio id="audio-radio" preload="none"></audio>
 
 <script>
-    // --- VARIABLES GLOBALES ---
     const audioMusic = document.getElementById('audio-music');
     const audioRadio = document.getElementById('audio-radio');
-    let playlist = []; // {name, url}
+    let playlist = [];
     let currentTrackIndex = 0;
     let isShuffle = false;
     let favoritesMusic = JSON.parse(localStorage.getItem('favMusic')) || [];
@@ -202,11 +202,9 @@
     let showingFavs = false;
     let db;
 
-    // Web Audio API
     let audioCtx, analyser, source, eqFilters = [];
     let audioContextInit = false;
 
-    // Radios (Incluidas algunas que suelen funcionar en navegador)
     const radioStations = [
         { name: "Radio Hit Perú", url: "https://sonic.clikstreaming.com/8070/stream", city: "Lima" },
         { name: "Radio Ritmo", url: "https://stream.zeno.fm/80r28nzf2v8uv", city: "Perú" },
@@ -217,7 +215,7 @@
     ];
     let currentStationIndex = 0;
 
-    // --- INDEXED DB (PARA GUARDAR MÚSICA PERMANENTEMENTE) ---
+    // --- BASE DE DATOS (INDEXED DB) ---
     function initDB() {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open("WaqrapfukoDB", 1);
@@ -227,54 +225,63 @@
                     database.createObjectStore("songs", { keyPath: "name" });
                 }
             };
-            request.onsuccess = (e) => { db = e.target.result; resolve(db); };
-            request.onerror = (e) => reject("Error abriendo base de datos");
+            request.onsuccess = (e) => resolve(e.target.result);
+            request.onerror = (e) => reject("Error DB");
         });
     }
 
+    // FUNCIÓN ANTI-CONGELAMIENTO: Guarda canción por canción con pausas
     async function saveSongsToDB(files) {
-        document.getElementById('loading-db').style.display = 'block';
-        const tx = db.transaction("songs", "readwrite");
-        const store = tx.objectStore("songs");
+        const loadingEl = document.getElementById('loading-db');
+        loadingEl.style.display = 'block';
         
-        for (const file of files) {
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
             const name = file.name.replace(/\.[^/.]+$/, "");
-            // Eliminar si ya existe para actualizar
-            store.delete(name);
-            store.add({ name: name, blob: file });
+            
+            // Mostrar progreso real
+            loadingEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Guardando ${i + 1} de ${files.length}...`;
+            
+            // Pequeña pausa para que el celular no se congele
+            await new Promise(r => setTimeout(r, 50));
+            
+            await new Promise((resolve, reject) => {
+                const tx = db.transaction("songs", "readwrite");
+                const store = tx.objectStore("songs");
+                store.put({ name: name, blob: file }); // PUT actualiza si existe
+                tx.oncomplete = resolve;
+                tx.onerror = reject;
+            });
         }
         
-        tx.oncomplete = () => {
-            document.getElementById('loading-db').style.display = 'none';
-            loadPlaylistFromDB();
-        };
+        loadingEl.style.display = 'none';
+        await loadPlaylistFromDB();
     }
 
     async function loadPlaylistFromDB() {
-        const tx = db.transaction("songs", "readonly");
-        const store = tx.objectStore("songs");
-        const request = store.getAll();
+        return new Promise((resolve) => {
+            const tx = db.transaction("songs", "readonly");
+            const store = tx.objectStore("songs");
+            const request = store.getAll();
 
-        request.onsuccess = () => {
-            // Limpiar URLs anteriores para liberar memoria
-            playlist.forEach(p => URL.revokeObjectURL(p.url));
-            
-            playlist = request.result.map(song => {
-                return { name: song.name, url: URL.createObjectURL(song.blob) };
-            });
-            
-            if (playlist.length > 0) {
-                document.getElementById('song-title').textContent = playlist[0].name;
-                document.getElementById('song-artist').textContent = `${playlist.length} canciones encontradas`;
-            } else {
-                document.getElementById('song-title').textContent = "Sin música guardada";
-                document.getElementById('song-artist').textContent = "Presiona 'Agregar carpeta'";
-            }
-            renderPlaylist();
-        };
+            request.onsuccess = () => {
+                playlist.forEach(p => URL.revokeObjectURL(p.url)); // Limpiar memoria vieja
+                playlist = request.result.map(song => ({ name: song.name, url: URL.createObjectURL(song.blob) }));
+                
+                if (playlist.length > 0) {
+                    document.getElementById('song-title').textContent = playlist[0].name;
+                    document.getElementById('song-artist').textContent = `${playlist.length} canciones guardadas`;
+                } else {
+                    document.getElementById('song-title').textContent = "Sin música guardada";
+                    document.getElementById('song-artist').textContent = "Presiona 'Seleccionar Canciones'";
+                }
+                renderPlaylist();
+                resolve();
+            };
+        });
     }
 
-    // --- INICIALIZACIÓN ---
+    // --- INICIO ---
     document.addEventListener('DOMContentLoaded', async () => {
         createVumeter();
         renderRadioStations();
@@ -289,13 +296,14 @@
         }
     });
 
-    // --- NAVEGACIÓN ---
+    // --- NAVEGACIÓN INFERIOR ---
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', (e) => {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
             e.currentTarget.classList.add('active');
             document.getElementById(e.currentTarget.dataset.sec).classList.add('active');
+            
             if(e.currentTarget.dataset.sec === 'sec-radio') audioMusic.pause();
             if(e.currentTarget.dataset.sec === 'sec-music') audioRadio.pause();
         });
@@ -309,13 +317,9 @@
         analyser.fftSize = 256;
         source = audioCtx.createMediaElementSource(audioMusic);
         
-        const frequencies = [60, 230, 910, 4000, 14000];
-        frequencies.forEach(freq => {
+        [60, 230, 910, 4000, 14000].forEach(freq => {
             const filter = audioCtx.createBiquadFilter();
-            filter.type = 'peaking';
-            filter.frequency.value = freq;
-            filter.Q.value = 1;
-            filter.gain.value = 0;
+            filter.type = 'peaking'; filter.frequency.value = freq; filter.Q.value = 1; filter.gain.value = 0;
             eqFilters.push(filter);
         });
 
@@ -323,7 +327,6 @@
         for(let i=0; i<eqFilters.length -1; i++) eqFilters[i].connect(eqFilters[i+1]);
         eqFilters[eqFilters.length - 1].connect(analyser);
         analyser.connect(audioCtx.destination);
-        
         audioContextInit = true;
         drawVumeter();
     }
@@ -331,11 +334,7 @@
     // --- VUMETER ---
     function createVumeter() {
         const container = document.getElementById('vumeter');
-        for(let i=0; i<20; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'bar';
-            container.appendChild(bar);
-        }
+        for(let i=0; i<20; i++) { const bar = document.createElement('div'); bar.className = 'bar'; container.appendChild(bar); }
     }
 
     function drawVumeter() {
@@ -345,15 +344,10 @@
         analyser.getByteFrequencyData(dataArray);
         const bars = document.querySelectorAll('.bar');
         const step = Math.floor(dataArray.length / bars.length);
-        
         bars.forEach((bar, index) => {
-            const value = dataArray[index * step];
-            // Altura máxima 45px para no romper la caja de 50px
-            const height = Math.max(2, (value / 255) * 45); 
+            const height = Math.max(2, (dataArray[index * step] / 255) * 45);
             bar.style.height = `${height}px`;
-            if(height < 15) bar.style.background = '#4CAF50';
-            else if(height < 30) bar.style.background = '#FFC107';
-            else bar.style.background = '#D32F2F';
+            bar.style.background = height < 15 ? '#4CAF50' : height < 30 ? '#FFC107' : '#D32F2F';
         });
     }
 
@@ -363,33 +357,29 @@
     document.getElementById('file-input').addEventListener('change', (e) => {
         const files = Array.from(e.target.files).filter(f => f.type.startsWith('audio/'));
         if(files.length === 0) return;
-        saveSongsToDB(files); // Guardar permanentemente
-        e.target.value = ''; // Limpiar input
+        saveSongsToDB(files);
+        e.target.value = '';
     });
 
     function loadTrack(index) {
         if (index < 0 || index >= playlist.length) return;
         currentTrackIndex = index;
         const track = playlist[index];
-        
         document.getElementById('song-title').textContent = track.name;
         document.getElementById('song-artist').textContent = `Canción ${index + 1} de ${playlist.length}`;
-        
         audioMusic.src = track.url;
         initAudioContext();
         if(audioCtx.state === 'suspended') audioCtx.resume();
-        
-        audioMusic.play().catch(e => console.log("Error al reproducir", e));
+        audioMusic.play().catch(e => console.log("Error reproduciendo", e));
         updatePlayButton('music', true);
         updateFavIcon();
     }
 
-    // --- CONTROLES DE MÚSICA ---
+    // --- CONTROLES ---
     document.getElementById('btn-play-music').addEventListener('click', () => {
-        if (playlist.length === 0) return alert("No hay canciones. Carga una carpeta.");
+        if (playlist.length === 0) return alert("No hay canciones. Selecciona tus MP3 primero.");
         initAudioContext();
         if (audioCtx.state === 'suspended') audioCtx.resume();
-        
         if (audioMusic.paused) { audioMusic.play(); updatePlayButton('music', true); }
         else { audioMusic.pause(); updatePlayButton('music', false); }
     });
@@ -413,7 +403,6 @@
         e.currentTarget.classList.toggle('active', isShuffle);
     });
 
-    // Progress Bar
     audioMusic.addEventListener('timeupdate', () => {
         if (audioMusic.duration) {
             document.getElementById('progress-fill').style.width = `${(audioMusic.currentTime / audioMusic.duration) * 100}%`;
@@ -430,7 +419,7 @@
 
     document.getElementById('vol-music').addEventListener('input', (e) => audioMusic.volume = e.target.value);
 
-    // --- FAVORITOS MÚSICA ---
+    // --- FAVORITOS ---
     document.getElementById('btn-fav-music').addEventListener('click', () => {
         if (playlist.length === 0) return;
         const name = playlist[currentTrackIndex].name;
@@ -457,7 +446,6 @@
         const container = document.getElementById('playlist-container');
         container.innerHTML = '';
         let listToShow = showingFavs ? favoritesMusic : playlist.map(t => t.name);
-        
         if (listToShow.length === 0) {
             container.innerHTML = `<p style="color:var(--text-dim); text-align:center; width:100%">${showingFavs ? 'No hay favoritos.' : 'Lista vacía.'}</p>`;
             return;
@@ -474,10 +462,9 @@
         });
     }
 
-    // --- ECUALIZADOR ---
+    // --- EQ ---
     document.getElementById('btn-eq').addEventListener('click', () => document.getElementById('eq-overlay').classList.add('show'));
     document.getElementById('btn-close-eq').addEventListener('click', () => document.getElementById('eq-overlay').classList.remove('show'));
-
     document.querySelectorAll('.eq-band').forEach(slider => {
         slider.addEventListener('input', (e) => {
             e.target.nextElementSibling.textContent = `${e.target.value}dB`;
@@ -494,7 +481,7 @@
             const div = document.createElement('div');
             div.className = 'radio-station';
             div.id = `radio-${index}`;
-            div.innerHTML = `<i class="fas fa-broadcast-tower"></i><div class="radio-name">${station.name}</div><div style="font-size:0.7rem; color:var(--text-dim)">${station.city}</div>`;
+            div.innerHTML = `<i class="fas fa-broadcast-tower"></i><div class="radio-name">${station.name}</div><div style="font-size:0.7rem; color:var(--text-dim); margin-top:5px">${station.city}</div>`;
             div.addEventListener('click', () => playRadio(index));
             grid.appendChild(div);
         });
@@ -502,24 +489,18 @@
 
     function playRadio(index) {
         currentStationIndex = index;
-        const station = radioStations[index];
-        
-        audioRadio.src = station.url;
+        audioRadio.src = radioStations[index].url;
         audioRadio.play().catch(e => {
-            alert("Esta emisora bloqueó la reproducción desde el navegador web (CORS). Prueba otra.");
+            alert("Esta emisora bloqueó la reproducción web. Prueba otra.");
             document.getElementById(`radio-${index}`).classList.add('error');
         });
-        
         document.querySelectorAll('.radio-station').forEach(s => s.classList.remove('active'));
         document.getElementById(`radio-${index}`).classList.add('active');
-        
         updatePlayButton('radio', true);
         updateRadioFavIcon();
     }
 
-    audioRadio.addEventListener('error', (e) => {
-        document.getElementById(`radio-${currentStationIndex}`).classList.add('error');
-    });
+    audioRadio.addEventListener('error', () => document.getElementById(`radio-${currentStationIndex}`).classList.add('error'));
 
     document.getElementById('btn-play-radio').addEventListener('click', () => {
         if (audioRadio.src === "" || audioRadio.src === window.location.href) return playRadio(0);
@@ -527,12 +508,8 @@
         else { audioRadio.pause(); updatePlayButton('radio', false); }
     });
 
-    document.getElementById('btn-next-radio').addEventListener('click', () => {
-        playRadio((currentStationIndex + 1) % radioStations.length);
-    });
-    document.getElementById('btn-prev-radio').addEventListener('click', () => {
-        playRadio((currentStationIndex - 1 + radioStations.length) % radioStations.length);
-    });
+    document.getElementById('btn-next-radio').addEventListener('click', () => playRadio((currentStationIndex + 1) % radioStations.length));
+    document.getElementById('btn-prev-radio').addEventListener('click', () => playRadio((currentStationIndex - 1 + radioStations.length) % radioStations.length));
     document.getElementById('vol-radio').addEventListener('input', (e) => audioRadio.volume = e.target.value);
 
     document.getElementById('btn-fav-radio').addEventListener('click', () => {
@@ -549,26 +526,21 @@
         document.getElementById('btn-fav-radio').classList.toggle('active', isFav);
     }
 
-    // --- UTILIDADES ---
+    // --- UTILS ---
     function updatePlayButton(type, isPlaying) {
         document.getElementById(`btn-play-${type}`).querySelector('i').className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
     }
-
     function formatTime(sec) {
         if(isNaN(sec)) return "0:00";
         return `${Math.floor(sec / 60)}:${Math.floor(sec % 60).toString().padStart(2, '0')}`;
     }
-
     function initMediaSession() {
         if (!('mediaSession' in navigator)) return;
         navigator.mediaSession.setActionHandler('play', () => document.getElementById('sec-music').classList.contains('active') ? audioMusic.play() : audioRadio.play());
         navigator.mediaSession.setActionHandler('pause', () => document.getElementById('sec-music').classList.contains('active') ? audioMusic.pause() : audioRadio.pause());
         navigator.mediaSession.setActionHandler('previoustrack', () => document.getElementById('sec-music').classList.contains('active') ? document.getElementById('btn-prev').click() : document.getElementById('btn-prev-radio').click());
         navigator.mediaSession.setActionHandler('nexttrack', () => document.getElementById('sec-music').classList.contains('active') ? document.getElementById('btn-next').click() : document.getElementById('btn-next-radio').click());
-        
-        audioMusic.addEventListener('play', () => {
-            navigator.mediaSession.metadata = new MediaMetadata({ title: playlist[currentTrackIndex]?.name || 'Waqrapfuko', artist: 'Música Local' });
-        });
+        audioMusic.addEventListener('play', () => { navigator.mediaSession.metadata = new MediaMetadata({ title: playlist[currentTrackIndex]?.name || 'Waqrapfuko', artist: 'Música Local' }); });
     }
 </script>
 </body>
