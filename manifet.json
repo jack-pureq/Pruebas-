@@ -1,6 +1,6 @@
 {
-  "name": "Reproductor de Música",
-  "short_name": "Reproductor",
+  "name": "Waqrapfuko",
+  "short_name": "Waqrapfuko",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#121212",
